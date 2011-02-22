@@ -2,9 +2,9 @@
 
 $plugin_info = array(
 	'pi_name' => 'Template Code',
-	'pi_version' => '1.0.0',
+	'pi_version' => '1.0.1',
 	'pi_author' => 'Rob Sanchez',
-	'pi_author_url' => 'http://barrettnewton.com/',
+	'pi_author_url' => 'http://github.com/rsanchez',
 	'pi_description' => 'Display a template without parsing its tags, and converting html entities; useful for showing off template code.',
 	'pi_usage' => Template_code::usage()
 );

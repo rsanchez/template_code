@@ -13,13 +13,10 @@ class Template_code
 {
 	public $return_data = '';
 	
-	public function __construct()
-	{
-		$this->EE = get_instance();
-	}
-	
 	public function Template_code()
 	{
+		$this->EE = get_instance();
+		
 		if ( ! $template = $this->EE->TMPL->fetch_param('template'))
 		{
 			return;
@@ -27,7 +24,7 @@ class Template_code
 		
 		if (strpos($template, '/') !== FALSE)
 		{
-			list($group_name, $template_name) = preg_split('#/#', $template);
+			list($group_name, $template_name) = explode('/', $template);
 		}
 		else
 		{
@@ -36,14 +33,13 @@ class Template_code
 			$template_name = 'index';
 		}
 		
-		$this->EE->db->select('exp_templates.template_data');
-		$this->EE->db->join('exp_template_groups', 'exp_template_groups.group_id = exp_templates.group_id');
-		$this->EE->db->where('exp_templates.template_name', $template_name);
-		$this->EE->db->where('exp_template_groups.group_name', $group_name);
-		$this->EE->db->where('exp_template_groups.site_id', $this->EE->config->item('site_id'));
-		$this->EE->db->limit(1);
+		$this->EE->load->model('template_model');
 		
-		$query = $this->EE->db->get('exp_templates');
+		$query = $this->EE->template_model->get_templates(
+			$this->EE->TMPL->fetch_param('site_id'),
+			array('template_data'),
+			array('template_name' => $template_name, 'group_name' => $group_name)
+		);
 		
 		if ( ! $query->num_rows())
 		{
